@@ -191,13 +191,13 @@ def main():
             return
         
         source_iter = itertools.count(1)
-        for source_raw_line in source_fd:
-            line = source_raw_line.strip()
+        for raw_line in source_fd:
+            source_line = raw_line.strip()
             
-            if not line:
+            if not source_line:
                 continue
             
-            line_split = line.rsplit(sep=':', maxsplit=1)
+            line_split = source_line.rsplit(sep=':', maxsplit=1)
             
             if len(line_split) != 2:
                 continue
@@ -212,7 +212,7 @@ def main():
             
             source_i = next(source_iter)
             
-            yield source_i, source_raw_line, source_host, source_port
+            yield source_i, source_line, source_host, source_port
     
     source_iter = source_iter_create()
     
@@ -243,7 +243,7 @@ def main():
         ))
         
         if good_fd is not None:
-            good_fd.write(handler_data.source_raw_line)
+            good_fd.write('{}\n'.format(handler_data.source_line))
             good_fd.flush()
         
         if good_csv_writer is not None:
@@ -283,7 +283,7 @@ def main():
         ))
         
         if bad_fd is not None:
-            bad_fd.write(handler_data.source_raw_line)
+            bad_fd.write('{}\n'.format(handler_data.source_line))
             bad_fd.flush()
         
         if bad_csv_writer is not None:

@@ -42,7 +42,7 @@ class SockCkBlockingThreadCtx:
 
 @asyncio.coroutine
 def sock_ck_thread(loop, thread_ctx):
-    for source_i, source_raw_line, source_host, source_port in thread_ctx.source_iter:
+    for source_i, source_line, source_host, source_port in thread_ctx.source_iter:
         result_queue = asyncio.Queue(loop=loop)
         
         def blocking_thread():
@@ -75,7 +75,7 @@ def sock_ck_thread(loop, thread_ctx):
         handler_data = HandlerData()
         handler_data.thread_ctx = thread_ctx
         handler_data.source_i = source_i
-        handler_data.source_raw_line = source_raw_line
+        handler_data.source_line = source_line
         handler_data.source_host = source_host
         handler_data.source_port = source_port
         
