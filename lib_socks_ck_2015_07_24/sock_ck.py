@@ -55,7 +55,10 @@ def sock_ck_thread(loop, thread_ctx):
                 
                 bl_thread_ctx.begin_time = datetime.datetime.utcnow()
                 
-                with socks_proxy_context.socks_proxy_context(proxy_address=(source_host, source_port)):
+                with socks_proxy_context.socks_proxy_context(
+                      proxy_address=(source_host, source_port),
+                      proxy_timeout=thread_ctx.req_timeout,
+                    ):
                     res = opener.open(thread_ctx.check_url, timeout=thread_ctx.req_timeout)
                 
                 data = res.read(thread_ctx.req_length).decode(errors='replace')
