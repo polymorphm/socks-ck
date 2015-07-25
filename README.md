@@ -7,4 +7,4 @@ socks-ck
 Status
 ------
 
-Release: socks-ck-0.1.4 .
+Release: socks-ck-0.1.5 .
