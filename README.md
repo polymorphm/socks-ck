@@ -7,4 +7,4 @@ socks-ck
 Status
 ------
 
-Developer version (git master branch).
+Release: socks-ck-0.1.1 .
