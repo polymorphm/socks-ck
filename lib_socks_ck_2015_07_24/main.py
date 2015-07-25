@@ -217,6 +217,7 @@ def main():
     source_iter = source_iter_create()
     
     loop = asyncio.get_event_loop()
+    hook_lock = asyncio.Lock(loop=loop)
     
     @asyncio.coroutine
     def begin_handler(loop, handler_data):
@@ -229,6 +230,11 @@ def main():
     
     @asyncio.coroutine
     def done_handler(loop, handler_data):
+        delta_ms = timedelta_to_ms(
+            handler_data.bl_thread_ctx.done_time -
+            handler_data.bl_thread_ctx.begin_time
+            )
+        
         try_print('thread {!r}, source {!r}, host {!r}, port {!r}: done'.format(
             handler_data.thread_ctx.thread_i,
             handler_data.source_i,
@@ -241,11 +247,6 @@ def main():
             good_fd.flush()
         
         if good_csv_writer is not None:
-            delta_ms = timedelta_to_ms(
-                handler_data.bl_thread_ctx.done_time -
-                handler_data.bl_thread_ctx.begin_time
-                )
-            
             good_csv_writer.writerow((
                 handler_data.source_host,
                 handler_data.source_port,
@@ -260,12 +261,18 @@ def main():
                 shlex.quote(str(delta_ms)),
             )
             
-            proc = yield from asyncio.create_subprocess_shell(cmd, loop=loop)
-            
-            yield from proc.wait()
+            with (yield from hook_lock):
+                proc = yield from asyncio.create_subprocess_shell(cmd, loop=loop)
+                
+                yield from proc.wait()
     
     @asyncio.coroutine
     def error_handler(loop, handler_data):
+        delta_ms = timedelta_to_ms(
+            handler_data.bl_thread_ctx.error_time -
+            handler_data.bl_thread_ctx.begin_time
+            )
+        
         try_print('thread {!r}, source {!r}, host {!r}, port {!r}: error: {!r} {}'.format(
             handler_data.thread_ctx.thread_i,
             handler_data.source_i,
@@ -280,11 +287,6 @@ def main():
             bad_fd.flush()
         
         if bad_csv_writer is not None:
-            delta_ms = timedelta_to_ms(
-                handler_data.bl_thread_ctx.error_time -
-                handler_data.bl_thread_ctx.begin_time
-                )
-            
             bad_csv_writer.writerow((
                 handler_data.source_host,
                 handler_data.source_port,
