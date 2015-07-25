@@ -88,7 +88,7 @@ def main():
     parser.add_argument(
         '--check-url',
         metavar='CHECK-URL',
-        help='url as checking sample {!r}'.format(DEFAULT_CHECK_URL),
+        help='url as checking sample. default is  {!r}'.format(DEFAULT_CHECK_URL),
     )
     parser.add_argument(
         '--check-answer',
