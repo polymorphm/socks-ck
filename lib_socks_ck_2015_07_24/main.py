@@ -252,6 +252,7 @@ def main():
                 handler_data.source_port,
                 delta_ms,
             ))
+            good_csv_fd.flush()
         
         if good_hook_cmd is not None:
             cmd = '{} {} {} {}'.format(
@@ -294,6 +295,7 @@ def main():
                 handler_data.bl_thread_ctx.error_type,
                 handler_data.bl_thread_ctx.error_str,
             ))
+            bad_csv_fd.flush()
     
     sock_ck_coro = sock_ck.sock_ck(
         loop,
