@@ -1,7 +1,7 @@
-sock-ck
+socks-ck
 =======
 
-``sock-ck`` is typical (simple, trivial) utility for socks-proxy checking.
+``socks-ck`` is typical (simple, trivial) utility for socks-proxy checking.
 
 
 Status
