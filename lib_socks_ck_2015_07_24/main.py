@@ -323,5 +323,11 @@ def main():
     if good_fd is not None:
         good_fd.close()
     
+    if good_csv_fd is not None:
+        good_csv_fd.close()
+    
     if bad_fd is not None:
         bad_fd.close()
+    
+    if bad_csv_fd is not None:
+        bad_csv_fd.close()
