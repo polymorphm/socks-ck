@@ -117,6 +117,7 @@ def sock_ck(
             done_handler=None,
             error_handler=None,
         ):
+    assert source_iter is not None
     assert check_url is not None
     assert check_answer is not None
     assert req_timeout is not None
